@@ -1,6 +1,7 @@
 require 'nppes/update_pack'
 require 'nppes/models'
-
+require 'nppes/jobs'
+require 'nppes/railtie' if defined?(Rails)
 
 module Nppes
   mattr_accessor :updates_url
@@ -24,8 +25,12 @@ module Nppes
       UpdatePack::Pack.check_updates
     end
 
-    def init(filename)
-      UpdatePack::Pack.proceed(filename)
+    def init(zip_file_name)
+      UpdatePack::Pack.proceed(zip_file_name)
+    end
+
+    def has_npi?(npi)
+      Nppes::NpIdentifier.where(npi: npi).present?
     end
   end
 end

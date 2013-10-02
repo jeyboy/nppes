@@ -22,9 +22,12 @@ class AddNppesTable < ActiveRecord::Migration
 
       t.timestamps
     end
+
+    add_index(:np_identifiers, [:npi], {:name => 'np_identifiers_npi'})
   end
 
   def self.down
+    #remove_index :np_identifiers, :name => 'np_identifiers_npi'
     drop_table :np_identifiers
   end
 end

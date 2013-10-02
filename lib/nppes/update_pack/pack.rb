@@ -21,8 +21,14 @@ module Nppes
         end
 
         def proceed_updates
-          Nppes::NpUpdateCheck.where(done: [false, nil]).each do |update|
+          Nppes::NpUpdateCheck.proc_needed.each do |update|
             proceed_update(update)
+          end
+        end
+
+        def background_proceed_updates
+          Nppes::NpUpdateCheck.proc_needed.each do |update|
+            Delayed::Job.enqueue UpdaterJob.new(update)
           end
         end
 
@@ -37,6 +43,20 @@ module Nppes
           proceed_updates
         end
 
+        def background_check_updates
+          Delayed::Job.enqueue SearcherJob.new
+        end
+
+        def proceed_update(update)
+          begin
+            proceed(prepare_file(update))
+          rescue
+            update.update_attribute(:done, false)
+          else
+            update.update_attribute(:done, true)
+          end
+        end
+
         protected
           def prepare_file(update)
             ret_file = open(update.file_link)
@@ -44,16 +64,6 @@ module Nppes
             file << ret_file.read.force_encoding('utf-8')
             file.flush
             file.path
-          end
-
-          def proceed_update(update)
-            begin
-              proceed(prepare_file(update))
-            rescue
-              update.update_attribute(:done, false)
-            else
-              update.update_attribute(:done, true)
-            end
           end
       end
     end
