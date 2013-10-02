@@ -21,7 +21,7 @@ module Nppes
     end
 
     def update
-
+      UpdatePack::Pack.check_updates
     end
 
     def init(filename)

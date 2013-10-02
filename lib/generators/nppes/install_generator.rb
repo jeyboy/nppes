@@ -13,15 +13,26 @@ module Nppes
       def copy_initializer
         migration_template(
             'active_record/base_npi_data.rb',
-            File.join('db', 'migrate', 'add_nppes_table.rb')
+            migrate_path('add_nppes_table.rb')
+        )
+        sleep(1)
+        migration_template(
+            'active_record/update_check.rb',
+            migrate_path('add_update_check_table.rb')
         )
         #sleep(1)
         #migration_template(
         #    'active_record/license.rb',
-        #    File.join('db', 'migrate', 'add_license_table.rb')
+        #    migrate_path('add_license_table.rb')
         #)
 
         template 'templates/nppes.rb', 'config/initializers/nppes_settings.rb'
+      end
+
+      protected
+
+      def migrate_path(name)
+        File.join('db', 'migrate', name)
       end
     end
   end

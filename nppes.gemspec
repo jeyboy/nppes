@@ -20,6 +20,7 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency('rails', '>= 3.0.0')
   gem.add_dependency('rubyzip')
-  #gem.add_dependency('hpricot')
+  gem.add_dependency('nokogiri')
+  #gem.add_dependency('delayed_job')
 end
 

@@ -1,4 +1,6 @@
 require 'zip'
+require 'nokogiri'
+require 'open-uri'
 
 module Nppes
   module UpdatePack
@@ -8,7 +10,7 @@ module Nppes
           zip = Zip::File.open(zip_file)
 
           data = zip.entries.detect {|entry| entry.name =~ /npidata_\d+-\d+\.csv/}
-          head = zip.entries.detect {|entry| entry.name =~ /npidata_\d+-\d+FileHeader\.csv/}
+          #head = zip.entries.detect {|entry| entry.name =~ /npidata_\d+-\d+FileHeader\.csv/}
 
           raise Exception.new('head or data not found') unless data || head
 
@@ -18,22 +20,41 @@ module Nppes
           data.proceed
         end
 
-        def search_updates
-          updates_file = nil
-          url = URI.parse(Nppes.updates_url)
-          res = Net::HTTP.start(url.host, url.port) {|http| http.get(url.path)}
-
-          #doc = Hpricot.parse(res.body)
-          #(doc/:a).each do |link|
-          #  npi_url_expr = /[a-zA-Z\.\/:_0-9]+\/NPPES_Data[a-zA-Z\.\/_:0-9]+\.zip/
-          #  updates_file = link.attributes['href'] and break unless npi_url_expr.match( link.attributes['href'] ).nil?
-          #end
-          #
-          #updates_file_name = /NPPES_Data[a-zA-Z\.\/_:0-9]+\.zip/.match( updates_file )[0]
-          #if !updates_file.blank? and !NppesUpdate.is_already_added?( updates_file_name )
-          #  NppesUpdate.create( :file_url => updates_file_name )
-          #end
+        def proceed_updates
+          Nppes::NpUpdateCheck.where(done: [false, nil]).each do |update|
+            proceed_update(update)
+          end
         end
+
+        def check_updates
+          doc = Nokogiri::HTML(open(Nppes.updates_url))
+          signature = Nppes.weekly ? Nppes.weekly_signature : Nppes.monthly_signature
+
+          doc.css('a').each do |link|
+            Nppes::NpUpdateCheck.where(file_link: link['href']).first_or_create if link['href'] =~ signature
+          end
+
+          proceed_updates
+        end
+
+        protected
+          def prepare_file(update)
+            ret_file = open(update.file_link)
+            file = Tempfile.new(File.basename(update.file_link))
+            file << ret_file.read.force_encoding('utf-8')
+            file.flush
+            file.path
+          end
+
+          def proceed_update(update)
+            begin
+              proceed(prepare_file(update))
+            rescue
+              update.update_attribute(:done, false)
+            else
+              update.update_attribute(:done, true)
+            end
+          end
       end
     end
   end
