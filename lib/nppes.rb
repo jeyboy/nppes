@@ -1,10 +1,6 @@
-#require 'email_template/j_models'
-#require 'email_template/j_mailers'
-#require 'email_template/j_helpers'
-#
-#include EmailTemplate::JModels
-#include EmailTemplate::JMailers
-#include EmailTemplate::Mailers::Helpers
+require 'nppes/update_pack'
+require 'nppes/models'
+
 
 module EmailTemplate
   mattr_accessor :updates_url
@@ -19,7 +15,17 @@ module EmailTemplate
   mattr_accessor :weekly
   self.weekly = true
 
-  def self.setup
-    yield self
+  class << self
+    def setup
+      yield self
+    end
+
+    def update
+
+    end
+
+    def init(filename)
+
+    end
   end
 end
