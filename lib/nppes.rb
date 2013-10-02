@@ -25,8 +25,7 @@ module Nppes
     end
 
     def init(filename)
-      pack = UpdatePack::Pack.new(filename)
-
+      UpdatePack::Pack.proceed(filename)
     end
   end
 end

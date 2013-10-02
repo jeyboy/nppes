@@ -2,22 +2,22 @@ require 'zip'
 
 module Nppes
   module UpdatePack
-    class Pack < UpdatePack::Base
-      def initialize(zip_file)
-        zip = Zip::File.open(zip_file)
-
-        data = zip.entries.detect {|entry| entry =~ /npidata_\d+-\d+\.csv/}
-        head = zip.entries.detect {|entry| entry =~ /npidata_\d+-\d+FileHeader\.csv/}
-
-        raise Exception.new('head or data not found') unless data || head
-
-        #header = UpdatePack::Header.new(head.get_input_stream)
-
-        data = UpdatePack::Data.new(data.get_input_stream)
-        data.proceed
-      end
-
+    class Pack
       class << self
+        def proceed(zip_file)
+          zip = Zip::File.open(zip_file)
+
+          data = zip.entries.detect {|entry| entry.name =~ /npidata_\d+-\d+\.csv/}
+          head = zip.entries.detect {|entry| entry.name =~ /npidata_\d+-\d+FileHeader\.csv/}
+
+          raise Exception.new('head or data not found') unless data || head
+
+          #header = UpdatePack::Header.new(head.get_input_stream)
+
+          data = UpdatePack::Data.new(data.get_input_stream)
+          data.proceed
+        end
+
         def search_updates
           updates_file = nil
           url = URI.parse(Nppes.updates_url)

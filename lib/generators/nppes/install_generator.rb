@@ -13,13 +13,13 @@ module Nppes
       def copy_initializer
         migration_template(
             'active_record/base_npi_data.rb',
-            File.join('db', 'migrations', 'add_nppes_table.rb')
+            File.join('db', 'migrate', 'add_nppes_table.rb')
         )
-        sleep(1)
-        migration_template(
-            'active_record/license.rb',
-            File.join('db', 'migrations', 'add_license_table.rb')
-        )
+        #sleep(1)
+        #migration_template(
+        #    'active_record/license.rb',
+        #    File.join('db', 'migrate', 'add_license_table.rb')
+        #)
 
         template 'templates/nppes.rb', 'config/initializers/nppes_settings.rb'
       end

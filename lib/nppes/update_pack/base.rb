@@ -7,7 +7,7 @@ module Nppes
 
       def parse(file)
         raise Exception.new('Block required') unless block_given?
-        file.each { |row| yield row }
+        file.each_with_index { |row, i| yield row unless i == 0 }
       end
 
       def split_row(row)

@@ -6,7 +6,7 @@ module Nppes
       class_attribute :code_values
 
       # not used at this time
-      @code_values = {
+      self.code_values = {
         entity_type_code: {
             1 => 'individual',
             2 => 'organization',
@@ -26,7 +26,7 @@ module Nppes
         }
       }
 
-      @fields = {
+      self.fields = {
           npi: 0,
           npi_deactivation_reason_code: 38,
           npi_deactivation_date: 39,
@@ -64,15 +64,15 @@ module Nppes
           #official_phone: 46
       }
 
-      @relations = {
+      self.relations = {
         np_licenses:
-          (0..14).each_with_object([]) do |i, ret|
-            ret << [
-              taxonomy_code: 47 + (i * 4),
-              license_number: 48 + (i * 4),
-              license_number_state_code: 49 + (i * 4),
-              healhcare_taxonomy_switch: 50 + (i * 4)
-            ]
+          (0..14).each_with_object({}) do |i, ret|
+            ret.update(
+                taxonomy_code: 47 + (i * 4),
+                license_number: 48 + (i * 4),
+                license_number_state_code: 49 + (i * 4),
+                healhcare_taxonomy_switch: 50 + (i * 4)
+            )
           end
       }
 

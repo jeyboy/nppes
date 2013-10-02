@@ -1,10 +1,14 @@
 class AddLicenseTable < ActiveRecord::Migration
   def self.up
     create_table :np_licenses do |t|
-      t.string   :taxonomy_code,            :limit => 10
-      t.string   :license_number,                      :limit => 10
-      t.string   :license_number_state_code,           :limit => 2
-      t.string   :healthcare_taxonomy_switch,  :limit => 1
+      t.integer :np_identifier_id
+
+      (1..15).each do |i|
+        t.string   "taxonomy_code_#{i}",              :limit => 10
+        t.string   "license_number_#{i}",             :limit => 10
+        t.string   "license_number_state_code_#{i}",  :limit => 2
+        t.string   "healthcare_taxonomy_switch_#{i}", :limit => 1
+      end
 
       t.timestamps
     end
