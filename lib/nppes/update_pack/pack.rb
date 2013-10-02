@@ -20,21 +20,19 @@ module Nppes
       class << self
         def search_updates
           updates_file = nil
-          up_load_url = "http://nppes.viva-it.com/NPI_Files.html"
-          url = URI.parse( up_load_url )
-          res = Net::HTTP.start(url.host, url.port) {|http| http.get( url.path ) }
+          url = URI.parse(Nppes.updates_url)
+          res = Net::HTTP.start(url.host, url.port) {|http| http.get(url.path)}
 
-          doc = Hpricot.parse( res.body )
-          (doc/:a).each do |link|
-            npi_url_expr = /[a-zA-Z\.\/:_0-9]+\/NPPES_Data[a-zA-Z\.\/_:0-9]+\.zip/
-            updates_file = link.attributes['href'] and break unless npi_url_expr.match( link.attributes['href'] ).nil?
-          end
-
-          updates_file_name = /NPPES_Data[a-zA-Z\.\/_:0-9]+\.zip/.match( updates_file )[0]
-          if !updates_file.blank? and !NppesUpdate.is_already_added?( updates_file_name )
-            NppesUpdate.create( :file_url => updates_file_name )
-            Mailer.deliver_nppes_update
-          end
+          #doc = Hpricot.parse(res.body)
+          #(doc/:a).each do |link|
+          #  npi_url_expr = /[a-zA-Z\.\/:_0-9]+\/NPPES_Data[a-zA-Z\.\/_:0-9]+\.zip/
+          #  updates_file = link.attributes['href'] and break unless npi_url_expr.match( link.attributes['href'] ).nil?
+          #end
+          #
+          #updates_file_name = /NPPES_Data[a-zA-Z\.\/_:0-9]+\.zip/.match( updates_file )[0]
+          #if !updates_file.blank? and !NppesUpdate.is_already_added?( updates_file_name )
+          #  NppesUpdate.create( :file_url => updates_file_name )
+          #end
         end
       end
     end

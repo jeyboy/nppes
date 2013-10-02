@@ -82,6 +82,11 @@ module Nppes
       #
       #"..."
       #
+      #"Other Provider Identifier_15"
+      #"Other Provider Identifier Type Code_15"
+      #"Other Provider Identifier State_15"
+      #"Other Provider Identifier Issuer_15"
+      #
       #
       #"Is Sole Proprietor"
       #"Is Organization Subpart"

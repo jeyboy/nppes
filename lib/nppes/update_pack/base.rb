@@ -7,13 +7,11 @@ module Nppes
 
       def parse(file)
         raise Exception.new('Block required') unless block_given?
-        CSV.foreach(file) do |row|
-          yield row
-        end
+        file.each { |row| yield row }
       end
 
       def split_row(row)
-        row.gsub(/\A"|"\z/, '').split(/\",\"/)
+        row.gsub(/\A"|"\n?\z/, '').split(/\",\"/)
       end
     end
   end
