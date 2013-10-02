@@ -19,5 +19,7 @@ Gem::Specification.new do |gem|
 
 
   gem.add_dependency('rails', '>= 3.0.0')
+  gem.add_dependency('rubyzip')
+  #gem.add_dependency('hpricot')
 end
 
