@@ -96,7 +96,11 @@ module Nppes
       #}
 
       def initialize(header_file)
-        parse(header_file) do |row|
+        @file = header_file
+      end
+
+      def proceed
+        parse(@file) do |row|
           @fields = split_row(row)
         end
       end

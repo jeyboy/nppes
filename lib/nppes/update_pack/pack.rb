@@ -13,7 +13,8 @@ module Nppes
 
         #header = UpdatePack::Header.new(head.get_input_stream)
 
-        #header = UpdatePack::Header.new(head.get_input_stream)
+        data = UpdatePack::Data.new(data.get_input_stream)
+        data.proceed
       end
 
       class << self

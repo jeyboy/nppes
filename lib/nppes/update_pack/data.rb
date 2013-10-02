@@ -2,8 +2,12 @@ module Nppes
   module UpdatePack
     class Data < UpdatePack::Base
       def initialize(data_file)
-        parse(data_file) do |row|
-          @fields = split_row(row)
+        @file = data_file
+      end
+
+      def proceed
+        parse(@file) do |row|
+          proceed_row(row)
         end
       end
 

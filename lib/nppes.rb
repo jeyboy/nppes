@@ -2,7 +2,7 @@ require 'nppes/update_pack'
 require 'nppes/models'
 
 
-module EmailTemplate
+module Nppes
   mattr_accessor :updates_url
   self.updates_url = 'http://nppes.viva-it.com/NPI_Files.html'
 
@@ -25,6 +25,7 @@ module EmailTemplate
     end
 
     def init(filename)
+      pack = UpdatePack::Pack.new(filename)
 
     end
   end

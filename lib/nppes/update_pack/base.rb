@@ -3,9 +3,11 @@ require 'csv'
 module Nppes
   module UpdatePack
     class Base
-      def parse(file_path)
+      class_attribute :file
+
+      def parse(file)
         raise Exception.new('Block required') unless block_given?
-        CSV.foreach(file_path) do |row|
+        CSV.foreach(file) do |row|
           yield row
         end
       end
