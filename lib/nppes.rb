@@ -25,12 +25,20 @@ module Nppes
       UpdatePack::Pack.check_updates
     end
 
+    def background_update(continious = false)
+      UpdatePack::Pack.background_check_updates(continious)
+    end
+
     def init(zip_file_name)
       UpdatePack::Pack.proceed(zip_file_name)
     end
 
     def has_npi?(npi)
       Nppes::NpIdentifier.where(npi: npi).present?
+    end
+
+    def get_time_period
+      weekly ? 7.days : 32.days
     end
   end
 end

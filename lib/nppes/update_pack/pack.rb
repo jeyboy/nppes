@@ -28,7 +28,7 @@ module Nppes
 
         def background_proceed_updates
           Nppes::NpUpdateCheck.proc_needed.each do |update|
-            Delayed::Job.enqueue UpdaterJob.new(update)
+            Delayed::Job.enqueue(Nppes::Jobs::UpdaterJob.new(update))
           end
         end
 
@@ -43,8 +43,9 @@ module Nppes
           proceed_updates
         end
 
-        def background_check_updates
-          Delayed::Job.enqueue SearcherJob.new
+        def background_check_updates(continious = false)
+          STDOUT << "Start background\n"
+          Delayed::Job.enqueue(Nppes::Jobs::SearcherJob.new((Nppes.get_time_period if continious)))
         end
 
         def proceed_update(update)
