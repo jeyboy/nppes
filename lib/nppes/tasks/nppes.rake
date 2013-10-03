@@ -10,6 +10,12 @@ namespace :nppes do
     Dir[Rails.root.join('tmp', 'pids','delayed_job*.pid')].present?
   end
 
+  desc 'Finish all backgrounds'
+  task :stop_all do
+    `kill -9 $(ps aux | less | grep delayed_job |  awk '{print $2}')`
+    Dir[Rails.root.join('tmp', 'pids','delayed_job*.pid')].each {|file| File.delete file}
+  end
+
   desc 'Start background env'
   task :start_background_env do
     `cd #{Rails.root} | RAILS_ENV=#{ENV['RAILS_ENV'] || 'development'} bin/delayed_job start`

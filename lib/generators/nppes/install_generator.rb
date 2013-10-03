@@ -11,15 +11,15 @@ module Nppes
 
       desc 'Creates initializer and migration.'
       def copy_initializer
-        #migration_template(
-        #    'active_record/base_npi_data.rb',
-        #    migrate_path('add_nppes_table.rb')
-        #)
-        #sleep(1)
-        #migration_template(
-        #    'active_record/update_check.rb',
-        #    migrate_path('add_update_check_table.rb')
-        #)
+        migration_template(
+            'active_record/base_npi_data.rb',
+            migrate_path('add_nppes_table.rb')
+        )
+        sleep(1)
+        migration_template(
+            'active_record/update_check.rb',
+            migrate_path('add_update_check_table.rb')
+        )
 
         #sleep(1)
         #migration_template(
@@ -29,6 +29,7 @@ module Nppes
 
         template 'templates/nppes.rb', 'config/initializers/nppes_settings.rb'
         generate 'delayed_job:active_record'
+        template 'templates/delayed_jobs.rb', 'config/initializers/delayed_jobs.rb'
       end
 
       protected
