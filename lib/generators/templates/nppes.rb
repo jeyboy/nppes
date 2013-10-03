@@ -1,19 +1,17 @@
 Nppes.setup do |config|
 
-  #############Whitelists################
+  #config.updates_url
+  #default updates_url = 'http://nppes.viva-it.com/NPI_Files.html'
 
-  # Accepts args as Hash and as Array
-  #if column name or attribute contains one of listened pieces - it will be ignore in output list
+  #config.initiate_signature
+  #default initiate_signature = /.+\/NPPES_Data_Dissemination_\w+_\d+\.zip/
 
-  # Ignore token list for columns
-  #config.columns_black_list = ["_at", "id"]
-  #config.columns_black_list = {'*' => ["_at", "id"], "some_object" => ["complete"]}
+  #config.weekly_signature
+  #default weekly_signature = /.+\/NPPES_Data_Dissemination_\d+_\d+_Weekly\.zip/
 
-  # Ignore token list for attributes
-  #config.attributes_black_list = []
+  #config.monthly_signature
+  #default monthly_signature = /.+\/NPPES_Deactivated_NPI_Report_\d+.zip/
 
-  #######################################
-
-  # Method header for object methods which will be output in usable tokens list. By default eql "et_"
-  #config.methods_header = "et_"
+  #config.weekly
+  #default weekly = true
 end

@@ -32,6 +32,15 @@ module Nppes
           end
         end
 
+        def init_base
+          doc = Nokogiri::HTML(open(Nppes.updates_url))
+          link = doc.css('a').detect do |link|
+            link['href'] =~ Nppes.initiate_signature
+          end
+          raise Exception.new('Initial file not found') unless link
+          proceed(prepare_file(link['href']))
+        end
+
         def check_updates
           doc = Nokogiri::HTML(open(Nppes.updates_url))
           signature = Nppes.weekly ? Nppes.weekly_signature : Nppes.monthly_signature
@@ -49,7 +58,7 @@ module Nppes
 
         def proceed_update(update)
           begin
-            proceed(prepare_file(update))
+            proceed(prepare_file(update.file_link))
           rescue
             update.update_attribute(:done, false)
           else
@@ -58,9 +67,9 @@ module Nppes
         end
 
         protected
-          def prepare_file(update)
-            ret_file = open(update.file_link)
-            file = Tempfile.new(File.basename(update.file_link))
+          def prepare_file(file_link)
+            ret_file = open(file_link)
+            file = Tempfile.new(File.basename(file_link))
             file << ret_file.read.force_encoding('utf-8')
             file.flush
             file.path

@@ -8,6 +8,9 @@ module Nppes
   mattr_accessor :updates_url
   self.updates_url = 'http://nppes.viva-it.com/NPI_Files.html'
 
+  mattr_accessor :initiate_signature
+  self.initiate_signature = /.+\/NPPES_Data_Dissemination_\w+_\d+\.zip/
+
   mattr_accessor :weekly_signature
   self.weekly_signature = /.+\/NPPES_Data_Dissemination_\d+_\d+_Weekly\.zip/
 
@@ -30,7 +33,11 @@ module Nppes
       UpdatePack::Pack.background_check_updates(continious)
     end
 
-    def init(zip_file_name)
+    def init
+      UpdatePack::Pack.init_base
+    end
+
+    def init_by_file(zip_file_name)
       UpdatePack::Pack.proceed(zip_file_name)
     end
 

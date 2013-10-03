@@ -4,8 +4,9 @@ module Nppes
       def perform
         UpdatePack::Pack.check_updates
       end
-
+      # not tested
       def reschedule_at(time, attempts)
+        Logger.new(File.join(Rails.root, 'log', 'delayed_job.log')).warn 'Rescheduling'
         time + 2.hours
       end
 
@@ -16,13 +17,13 @@ module Nppes
         end
       end
 
-      def error(job, error)
-        self.class.messages << "error: #{error.class}"
-      end
-
-      def failure(job)
-        self.class.messages << 'failure'
-      end
+      #def error(job, error)
+      #  #self.class.messages << "error: #{error.class}"
+      #end
+      #
+      #def failure(job)
+      #  #self.class.messages << 'failure'
+      #end
     end
   end
 end
