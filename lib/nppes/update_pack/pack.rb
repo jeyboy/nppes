@@ -7,7 +7,7 @@ module Nppes
     class Pack
       class << self
         def proceed(zip_file)
-          STDOUT << "proceed file\n"
+          Nppes.logger.warn 'proceed file'
           zip = Zip::File.open(zip_file)
 
           data = zip.entries.detect {|entry| entry.name =~ /npidata_\d+-\d+\.csv/}
@@ -18,7 +18,7 @@ module Nppes
           #header = UpdatePack::Header.new(head.get_input_stream)
 
           data = UpdatePack::Data.new(data.get_input_stream)
-          STDOUT << "proceed data\n"
+          Nppes.logger.warn 'proceed data'
           data.proceed
         end
 
@@ -34,8 +34,12 @@ module Nppes
           end
         end
 
+        def background_init_base
+          Delayed::Job.enqueue(Nppes::Jobs::IniterJob.new)
+        end
+
         def init_base
-          STDOUT << "find file\n"
+          Nppes.logger.warn 'find init file'
           doc = Nokogiri::HTML(open(Nppes.updates_url))
           link = doc.css('a').detect do |link|
             link['href'] =~ Nppes.initiate_signature
@@ -45,6 +49,7 @@ module Nppes
         end
 
         def check_updates
+          Nppes.logger.warn 'find updates'
           doc = Nokogiri::HTML(open(Nppes.updates_url))
           signature = Nppes.weekly ? Nppes.weekly_signature : Nppes.monthly_signature
 
@@ -71,7 +76,7 @@ module Nppes
 
         protected
           def prepare_file(file_link)
-            STDOUT << "prepare file\n"
+            Nppes.logger.warn 'prepare file'
             ret_file = open(file_link)
             file = Tempfile.new(File.basename(file_link))
             file << ret_file.read.force_encoding('utf-8')

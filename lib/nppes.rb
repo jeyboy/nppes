@@ -1,7 +1,7 @@
 require 'delayed_job'
-require 'nppes/update_pack'
 require 'nppes/models'
 require 'nppes/jobs'
+require 'nppes/update_pack'
 require 'nppes/railtie' if defined?(Rails)
 
 module Nppes
@@ -21,6 +21,10 @@ module Nppes
   self.weekly = true
 
   class << self
+    def logger
+      @@logger ||= Logger.new(File.join(Rails.root, 'log', 'delayed_job.log'))
+    end
+
     def setup
       yield self
     end
@@ -37,6 +41,10 @@ module Nppes
       UpdatePack::Pack.init_base
     end
 
+    def background_init
+      UpdatePack::Pack.background_init_base
+    end
+
     def init_by_file(zip_file_name)
       UpdatePack::Pack.proceed(zip_file_name)
     end
@@ -46,7 +54,7 @@ module Nppes
     end
 
     def get_time_period
-      weekly ? 7.days.to_i : 32.days.to_i
+      weekly ? 8.days.to_i : 32.days.to_i
     end
   end
 end

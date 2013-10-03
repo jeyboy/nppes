@@ -33,10 +33,11 @@ namespace :nppes do
     `cd #{Rails.root} | RAILS_ENV=#{ENV['RAILS_ENV'] || 'development'} bin/delayed_job stop`
   end
 
+
   desc 'Run init base by info'
   task :init_base => :environment do
     run_env
-    Nppes.init
+    Nppes.background_init
   end
 
   desc 'Run auto update'

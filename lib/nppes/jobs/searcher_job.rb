@@ -6,13 +6,13 @@ module Nppes
       end
       # not tested
       def reschedule_at(time, attempts)
-        Logger.new(File.join(Rails.root, 'log', 'delayed_job.log')).warn 'Rescheduling'
+        Nppes.logger.warn 'Rescheduling'
         time + 2.hours
       end
 
       def after(job)
         if period
-          Logger.new(File.join(Rails.root, 'log', 'delayed_job.log')).warn 'Create next update job'
+          Nppes.logger.warn 'Create next update job'
           Delayed::Job.enqueue(Nppes::Jobs::SearcherJob.new(period), 0, Time.now + period)
         end
       end
