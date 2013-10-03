@@ -7,6 +7,7 @@ module Nppes
     class Pack
       class << self
         def proceed(zip_file)
+          STDOUT << "proceed file\n"
           zip = Zip::File.open(zip_file)
 
           data = zip.entries.detect {|entry| entry.name =~ /npidata_\d+-\d+\.csv/}
@@ -17,6 +18,7 @@ module Nppes
           #header = UpdatePack::Header.new(head.get_input_stream)
 
           data = UpdatePack::Data.new(data.get_input_stream)
+          STDOUT << "proceed data\n"
           data.proceed
         end
 
@@ -33,6 +35,7 @@ module Nppes
         end
 
         def init_base
+          STDOUT << "find file\n"
           doc = Nokogiri::HTML(open(Nppes.updates_url))
           link = doc.css('a').detect do |link|
             link['href'] =~ Nppes.initiate_signature
@@ -68,6 +71,7 @@ module Nppes
 
         protected
           def prepare_file(file_link)
+            STDOUT << "prepare file\n"
             ret_file = open(file_link)
             file = Tempfile.new(File.basename(file_link))
             file << ret_file.read.force_encoding('utf-8')
