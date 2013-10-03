@@ -2,15 +2,13 @@ module Nppes
   module Jobs
     class SearcherJob < Struct.new(:period)
       def perform
-        STDOUT << "In searcher\n"
         UpdatePack::Pack.check_updates
       end
 
       def after(job)
-        STDOUT << "extend job\n"
-        STDOUT << "#{job.run_at}\n"
-        job.update_attribute(:run_at, Time.now + period) if period
-        STDOUT << "#{job.run_at}\n"
+        Logger.new(File.join(Rails.root, 'log', 'delayed_job.log')).fatal period
+        (job.run_at = Time.now + period) if period
+        Delayed::Job.enqueue(Nppes::Jobs::SearcherJob.new(period), 0, Time.now + period) if period
       end
     end
   end

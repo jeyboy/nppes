@@ -1,3 +1,4 @@
+require 'delayed_job'
 require 'nppes/update_pack'
 require 'nppes/models'
 require 'nppes/jobs'
@@ -38,7 +39,7 @@ module Nppes
     end
 
     def get_time_period
-      weekly ? 7.days : 32.days
+      weekly ? 7.days.to_i : 32.days.to_i
     end
   end
 end

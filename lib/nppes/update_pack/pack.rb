@@ -44,7 +44,6 @@ module Nppes
         end
 
         def background_check_updates(continious = false)
-          STDOUT << "Start background\n"
           Delayed::Job.enqueue(Nppes::Jobs::SearcherJob.new((Nppes.get_time_period if continious)))
         end
 
