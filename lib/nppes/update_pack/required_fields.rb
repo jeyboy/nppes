@@ -52,6 +52,7 @@ module Nppes
 
                 city: 30,
                 state: 31,
+                country: 33,
                 zip: 32,
                 phone: [34, 46]
             },
@@ -62,6 +63,7 @@ module Nppes
 
                 city: 22,
                 state: 23,
+                country: 25,
                 zip: 24,
                 phone: 26
             }

@@ -9,6 +9,7 @@ class AddProviderAddressTable < ActiveRecord::Migration
 
       t.string :city
       t.string :state
+      t.string :country
       t.string :zip
       t.string :phone
 

@@ -56,5 +56,9 @@ module Nppes
     def get_time_period
       weekly ? 8.days.to_i : 32.days.to_i
     end
+
+    def decode_value(value_type, value)
+      UpdatePack::CodeValues.decode(value_type, value)
+    end
   end
 end
