@@ -334,11 +334,16 @@ module Nppes
           "eh" => "Western Sahara",
           "ye" => "Yemen",
           "zm" => "Zambia",
+        },
+        taxonomy_code: {
+            # in future  http://www.wpc-edi.com/reference/
         }
       }
 
-      def decode(type, val)
-        code_values[type.downcase.to_sym][val.try :downcase]
+      class << self
+        def decode(type, val)
+          code_values[type.downcase.to_sym][val.try :downcase]
+        end
       end
     end
   end
