@@ -43,7 +43,8 @@ module Nppes
       #"Provider Business Practice Location Address Country Code (If outside U.S.)"
       #"Provider Business Practice Location Address Telephone Number"
       #"Provider Business Practice Location Address Fax Number"
-      #"Provider Enumeration Date"	"Last Update Date"
+      #"Provider Enumeration Date"
+      #"Last Update Date"
       #
       #"NPI Deactivation Reason Code"
       #"NPI Deactivation Date"

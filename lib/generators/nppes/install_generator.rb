@@ -11,21 +11,20 @@ module Nppes
 
       desc 'Creates initializer and migration.'
       def copy_initializer
-        migration_template(
-            'active_record/base_npi_data.rb',
-            migrate_path('add_nppes_table.rb')
-        )
-        sleep(1)
-        migration_template(
-            'active_record/update_check.rb',
-            migrate_path('add_update_check_table.rb')
-        )
-
-        #sleep(1)
-        #migration_template(
-        #    'active_record/license.rb',
-        #    migrate_path('add_license_table.rb')
-        #)
+        [
+            'add_nppes_table',
+            'add_update_check_table',
+            'add_license_table',
+            'add_provider_address_table'
+        ].each do |name|
+          unless migration_exists?(name)
+            migration_template(
+                "active_record/#{name}.rb",
+                migrate_path("#{name}.rb")
+            )
+            sleep(1)
+          end
+        end
 
         template 'templates/nppes.rb', 'config/initializers/nppes_settings.rb'
         generate 'delayed_job:active_record'
@@ -33,6 +32,10 @@ module Nppes
       end
 
       protected
+
+      def migration_exists?(name)
+        Dir.glob("#{migrate_path}/[0-9]*_*.rb").grep(/\d+_#{name}.rb$/).first
+      end
 
       def migrate_path(name='')
         File.join('db', 'migrate', name)

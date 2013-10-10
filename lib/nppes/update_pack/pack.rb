@@ -68,6 +68,8 @@ module Nppes
           begin
             proceed(prepare_file(update.file_link))
           rescue
+            Nppes.logger.error $!
+            Nppes.logger.error $@
             update.update_attribute(:done, false)
           else
             update.update_attribute(:done, true)
