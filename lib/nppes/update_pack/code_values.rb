@@ -1095,5 +1095,3 @@ module Nppes
     end
   end
 end
-
-doc.css('#RYO_HTML1 #flx').each {|e| ret << {e.first.children.first(2).last.text => e.first.children.first.text.gsub(/  - /, '')}}
