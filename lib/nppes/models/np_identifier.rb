@@ -8,5 +8,17 @@ module Nppes
     end
 
     validates :first_name, :last_name, presence: true
+
+    def decoded_gender
+      Nppes.decode_value(:gender_code, gender_code)
+    end
+
+    def decoded_entity_type
+      Nppes.decode_value(:entity_type_code, entity_type_code)
+    end
+
+    def decoded_deactivation_reason
+      Nppes.decode_value(:npi_deactivation_reason_code, npi_deactivation_reason_code)
+    end
   end
 end
