@@ -6,5 +6,7 @@ module Nppes
     def to_s
       "#{prefix} #{first_name} #{middle_name} #{last_name} #{suffix}"
     end
+
+    validates :first_name, :last_name, presence: true
   end
 end

@@ -30,13 +30,7 @@ module Nppes
           end
         end
 
-        #for submodel
-        #required_fields.relations.each_pair do |k, v|
-        #  relation = npi.send(k).new
-        #  entity.each_pair {|name, num| relation.send("#{name}=", @fields[num])}
-        #end
-
-        npi.save!
+        npi.save if npi.valid?
       end
 
       protected

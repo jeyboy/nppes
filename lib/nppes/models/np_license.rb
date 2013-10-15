@@ -2,7 +2,7 @@ module Nppes
   class NpLicense < ActiveRecord::Base
     belongs_to :np_identifier
 
-    validates :license_number, presence: true
+    validates :license_number, :taxonomy_code, presence: true
 
     def decoded_state
       Nppes.decode_value(:state, license_number_state_code)

@@ -2,7 +2,7 @@ module Nppes
   class NpAddress < ActiveRecord::Base
     belongs_to :np_identifier
 
-    validates :city, presence: true
+    validates :zip, :country, :state, :city, :address1, presence: true
 
     def decoded_country
       Nppes.decode_value(:country, country)
