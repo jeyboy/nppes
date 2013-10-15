@@ -39,7 +39,7 @@ rake nppes:auto_update
 ```
 This command checks for update once:
 ```console
-  rake nppes:update
+rake nppes:update
 ```
 
 ## Service commands
